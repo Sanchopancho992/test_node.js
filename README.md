@@ -90,7 +90,7 @@ Make sure you have the following installed:
 ### Feedback Endpoints (`/feedbacks`)
 
 #### Retrieve a List of Feedback Posts
-- **Route**: `/feedbacks`
+- **Route**: `/feedbacks?category=BUG&page=1&limit=1`
 - **Method**: `GET`
 - **Description**: Retrieve a list of feedback posts.
 - **Query Parameters (optional)**:
@@ -115,7 +115,7 @@ Make sure you have the following installed:
   {
     "title": "New Feedback",
     "description": "Detailed description here...",
-    "category": "UI",
+    "category": "BUG",
     "status": "Idea"
   }
   ```
@@ -135,7 +135,7 @@ Make sure you have the following installed:
   {
     "title": "Updated Feedback Title",
     "description": "Updated description of the feedback.",
-    "category": "Feature Request",
+    "category": "OTHER",
     "status": "In Progress"
   }
   ```
@@ -151,10 +151,10 @@ Make sure you have the following installed:
   }
   ```
 
-### Upvote Endpoints (`/upvotes/feedbackID/number/upvote`)
+### Upvote Endpoints (`/upvotes/feedbackID/upvote`)
 
 #### Upvote a Feedback Post
-- **Route**: `/upvotes/feedbackID/number/upvote`
+- **Route**: `/upvotes/feedbackID/upvote`
 - **Method**: `POST`
 - **Description**: Upvote a feedback post.
 - **Headers**:
@@ -165,7 +165,7 @@ Make sure you have the following installed:
   ```
 
 #### Get Upvote Information
-- **Route**: `/upvotes/feedbackID/number/upvote`
+- **Route**: `/upvotes/feedbackID/upvote`
 - **Method**: `GET`
 - **Description**: Get the information about the upvote.
 - **Headers**:

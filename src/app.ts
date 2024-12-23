@@ -17,6 +17,7 @@ app.use(morgan("dev"));
 // Routes
 app.use("/auth", authRoutes); // Authentication routes
 app.use("/upvoteS", upvoteRoutes);
+app.use("/feedbacks", feedbackRoutes);
 app.use("/feedbacks", feedbackRoutes); // Feedback-related routes
 // app.use("/categories", categoryRoutes)
 // Error Handling Middleware
