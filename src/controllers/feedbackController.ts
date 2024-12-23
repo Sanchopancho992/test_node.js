@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import prisma from "../utils/prisma";
 
+export enum Category {
+  BUG = "BUG",
+  FEATURE = "FEATURE",
+  ENHANCEMENT = "ENHANCEMENT",
+  OTHER = "OTHER",
+}
+
 export const createFeedback = async (
   req: Request,
   res: Response
@@ -31,11 +38,52 @@ export const createFeedback = async (
   }
 };
 
-export const getFeedbacks = async (req: Request, res: Response) => {
+export const getFeedbacks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { category, page = 1, limit = 10 } = req.query;
+
   try {
-    const feedbacks = await prisma.feedback.findMany();
-    res.status(200).json(feedbacks);
+    const skip = (Number(page) - 1) * Number(limit);
+
+    // Log the incoming category parameter
+    console.log("Category parameter received:", category);
+
+    // Validate and parse the category parameter
+    const whereClause: { category?: Category } = {};
+    if (category && Object.values(Category).includes(category as Category)) {
+      whereClause.category = category as Category;
+    } else if (category) {
+      // If the category is invalid, return an empty array
+      console.log("Invalid category provided:", category);
+      res.status(200).json({
+        feedbacks: [],
+        totalPages: 0,
+        currentPage: Number(page),
+      });
+      return; // Early return to avoid further processing
+    }
+
+    // Log the constructed whereClause
+    console.log("Where clause for query:", whereClause);
+
+    const feedbacks = await prisma.feedback.findMany({
+      where: whereClause,
+      skip,
+      take: Number(limit),
+      orderBy: { createdAt: "desc" }, // Sorting by latest
+    });
+
+    const totalFeedbacks = await prisma.feedback.count({ where: whereClause });
+
+    res.status(200).json({
+      feedbacks,
+      totalPages: Math.ceil(totalFeedbacks / Number(limit)),
+      currentPage: Number(page),
+    });
   } catch (error) {
+    console.error("Error fetching feedbacks:", error);
     res.status(500).json({ message: "Server error", error });
   }
 };
