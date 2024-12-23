@@ -12,8 +12,8 @@ model User {
   email    String   @unique
   password String
   avatar   String?
-  Feedback Feedback[]
-  Upvote   Upvote[]
+  feedback Feedback[]
+  upvotes   Upvote[]
 }
 
 model Feedback {
@@ -26,7 +26,7 @@ model Feedback {
   author      User     @relation(fields: [authorId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  Upvote      Upvote[]
+  upvotes     Upvote[] @relation("UpvoteFeedback") // Removed onDelete here
 }
 
 model Upvote {
@@ -34,6 +34,6 @@ model Upvote {
   userId     Int
   feedbackId Int
   user       User     @relation(fields: [userId], references: [id])
-  feedback   Feedback @relation(fields: [feedbackId], references: [id])
+  feedback   Feedback @relation("UpvoteFeedback", fields: [feedbackId], references: [id], onDelete: Cascade) // onDelete here
   createdAt  DateTime @default(now())
 }
