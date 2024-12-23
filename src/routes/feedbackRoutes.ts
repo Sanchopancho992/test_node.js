@@ -1,18 +1,24 @@
-// src/routes/feedbackRoutes.ts
-import { Router } from 'express';
+import { Router } from "express";
 import {
-    createFeedback,
-    getFeedbacks,
-    updateFeedback,
-    deleteFeedback,
-} from '../controllers/feedbackController';
-import authMiddleware from '../middleware/authMiddleware';
+  createFeedback,
+  getFeedbacks,
+  updateFeedback,
+  deleteFeedback,
+} from "../controllers/feedbackController";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.post('/', authMiddleware, createFeedback);
-router.get('/', getFeedbacks);
-router.put('/:id', authMiddleware, updateFeedback);
-router.delete('/:id', authMiddleware, deleteFeedback);
+// Create a new feedback
+router.post("/", authMiddleware, createFeedback);
+
+// Get all feedbacks
+router.get("/", getFeedbacks);
+
+// Update feedback by ID
+router.put("/:id", authMiddleware, updateFeedback);
+
+// Delete feedback by ID
+router.delete("/:id", authMiddleware, deleteFeedback);
 
 export default router;

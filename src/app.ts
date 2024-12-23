@@ -12,12 +12,10 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use('/upvoteS', upvoteRoutes);
 
 // Routes
 app.use("/auth", authRoutes); // Authentication routes
-app.use("/feedbacks", feedbackRoutes); // Feedback-related routes
-app.use("/feedbacks/upvotes", upvoteRoutes); // Upvote-related routes
+app.use("/upvoteS", upvoteRoutes);
 
 // Error Handling Middleware
 app.use(errorMiddleware);

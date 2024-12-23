@@ -20,7 +20,7 @@ export const createFeedback = async (
         category,
         status,
         author: {
-          connect: { id: req.userId }, // Assuming `req.userId` is set by your auth middleware
+          connect: { id: req.userId },
         },
       },
     });
@@ -81,33 +81,13 @@ export const updateFeedback = async (
     }
   }
 };
-export const deleteFeedback = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const deleteFeedback = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  // Check if id is a valid number
-  const feedbackId = Number(id);
-  if (isNaN(feedbackId)) {
-    res.status(400).json({ message: "Invalid feedback ID" });
-    return;
-  }
-
   try {
-    // Delete the feedback; associated upvotes will be deleted automatically
-    await prisma.feedback.delete({ where: { id: feedbackId } });
-    res.status(204).send(); // No content to send back
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Error deleting feedback:", error.message);
-      res.status(500).json({ message: "Server error", error: error.message });
-    } else {
-      console.error("Unexpected error:", error);
-      res.status(500).json({
-        message: "Server error",
-        error: "An unexpected error occurred.",
-      });
-    }
+    await prisma.feedback.delete({ where: { id: Number(id) } });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 };
